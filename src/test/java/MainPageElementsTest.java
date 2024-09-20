@@ -22,10 +22,10 @@ public class MainPageElementsTest extends TestBase {
         setup();
     }
 
-//    @AfterAll
-//    public static void teardownOnce() {
-//        tearDown();
-//    }
+    @AfterAll
+    public static void teardownOnce() {
+        tearDown();
+    }
 
     @Test
     @Order(1)
