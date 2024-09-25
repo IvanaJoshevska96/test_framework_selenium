@@ -1,12 +1,14 @@
 import annotations.TestDescription;
-import org.example.TestBase;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import utils.TestBase;
+import utils.TestWatcherExtension;
 
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +16,7 @@ import java.util.Objects;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
 
+@ExtendWith({TestWatcherExtension.class})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MainPageElementsTest extends TestBase {
 
@@ -257,10 +260,4 @@ public class MainPageElementsTest extends TestBase {
         assertTrue(driver.findElement(By.xpath("//div[@class=\"col-md-5\"]/descendant::input")).isDisplayed());
     }
 
-    @Test
-    @TestDescription("View page source")
-    public void getMethods() {
-        String pageSource = driver.getPageSource();
-        System.out.println(pageSource);
-    }
 }
