@@ -1,5 +1,4 @@
 import org.junit.jupiter.api.Test;
-import org.testng.Assert;
 import utils.TestBase;
 
 import static utils.xml_manipulation.XmlDuplicateChecker.checkForDuplicateIds;
