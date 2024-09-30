@@ -16,13 +16,13 @@ import java.util.Objects;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
 
-@ExtendWith({TestWatcherExtension.class})
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+//@ExtendWith({TestWatcherExtension.class})
+//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MainPageElementsTest extends TestBase {
 
     @BeforeAll
     public static void setupOnce() {
-        setup();
+        setup(BASE_URL);
     }
 
     @AfterAll
