@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><People>
+    <person>
+        <name>myName</name>
+        <lastName>myLastName</lastName>
+        <guid>b58d403a-ee5e-4885-aec1-375c757b709c</guid>
+    </person>
+    <person>
+        <name>myName</name>
+        <lastName>myLastName</lastName>
+        <guid>b6c3f9c5-ac97-40e7-b1f1-a9ba4c510a7a</guid>
+    </person>
+</People>
