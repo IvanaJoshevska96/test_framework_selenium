@@ -17,7 +17,7 @@ import utils.TestBase;
 import java.time.Duration;
 
 
-public class HandlingElementsTests extends TestBase {
+public class HandlingUIElementsTests extends TestBase {
     static WebDriver driver;
 
     @BeforeAll
