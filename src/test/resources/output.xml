@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><People>
     <person>
+        <id>1</id>
         <name>myName</name>
         <lastName>myLastName</lastName>
-        <guid>b58d403a-ee5e-4885-aec1-375c757b709c</guid>
+        <birthdate/>
+        <email/>
+        <tel_num/>
+        <guid>551f065f-1887-46b1-ad07-6ddaca7acc04</guid>
     </person>
     <person>
+        <id>1</id>
         <name>myName</name>
         <lastName>myLastName</lastName>
-        <guid>b6c3f9c5-ac97-40e7-b1f1-a9ba4c510a7a</guid>
+        <birthdate/>
+        <email/>
+        <tel_num/>
+        <guid>c77297cd-f16f-41f0-9fbb-5053223d8a5f</guid>
     </person>
 </People>

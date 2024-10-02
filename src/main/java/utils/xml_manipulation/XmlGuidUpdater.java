@@ -10,6 +10,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
@@ -18,7 +19,12 @@ public class XmlGuidUpdater {
         return UUID.randomUUID().toString().toLowerCase();
     }
 
-    public static void updateGuidsInXml(String inputFilePath, String outputFilePath) throws Exception {
+    public static String generateRandomId() {
+        Random random = new Random();
+        return String.format("%03d", random.nextInt(1000)); // Generates a random 3-digit number
+    }
+
+    public static void updateFieldInXml(String inputFilePath, String outputFilePath, String fieldType) throws Exception {
         Set<String> usedGuids = new HashSet<>();
         File inputFile = new File(inputFilePath);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -28,18 +34,27 @@ public class XmlGuidUpdater {
         NodeList elements = doc.getElementsByTagName("*");
         for (int i = 0; i < elements.getLength(); i++) {
             Node element = elements.item(i);
-            if (element.getNodeName().equalsIgnoreCase("guid")) {
+
+            // Update based on the specified field type
+            if (fieldType.equalsIgnoreCase("guid") && element.getNodeName().equalsIgnoreCase("guid")) {
                 String newGuid = generateUniqueGuid(usedGuids);
                 element.setTextContent(newGuid);
+            } else if (fieldType.equalsIgnoreCase("id") && element.getNodeName().equalsIgnoreCase("id")) {
+                String newId = generateRandomId();
+                element.setTextContent(newId);
             }
+
             if (element.getNodeType() == Node.ELEMENT_NODE) {
                 Element eElement = (Element) element;
                 NamedNodeMap attributes = eElement.getAttributes();
                 for (int j = 0; j < attributes.getLength(); j++) {
                     Attr attr = (Attr) attributes.item(j);
-                    if (attr.getName().equalsIgnoreCase("guid")) {
+                    if (fieldType.equalsIgnoreCase("guid") && attr.getName().equalsIgnoreCase("guid")) {
                         String newGuid = generateUniqueGuid(usedGuids);
                         attr.setValue(newGuid);
+                    } else if (fieldType.equalsIgnoreCase("id") && attr.getName().equalsIgnoreCase("id")) {
+                        String newId = generateRandomId();
+                        attr.setValue(newId);
                     }
                 }
             }
@@ -65,7 +80,10 @@ public class XmlGuidUpdater {
         String inputFilePath = "input.xml";
         String outputFilePath = "output.xml";
 
-        updateGuidsInXml(inputFilePath, outputFilePath);
-        System.out.println("GUIDs updated successfully.");
+        // Change "guid" to "id" to update IDs instead of GUIDs
+        String fieldType = "guid"; // or "id" to update IDs
+
+        updateFieldInXml(inputFilePath, outputFilePath, fieldType);
+        System.out.println("Fields updated successfully.");
     }
 }

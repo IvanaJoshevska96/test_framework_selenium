@@ -1,12 +1,20 @@
 <People>
     <person>
+        <id>1</id>
         <name>myName</name>
         <lastName>myLastName</lastName>
+        <birthdate></birthdate>
+        <email></email>
+        <tel_num></tel_num>
         <guid>05d70e4a-834c-4647-9866-fa76b42652f1</guid>
     </person>
     <person>
+        <id>1</id>
         <name>myName</name>
         <lastName>myLastName</lastName>
-        <guid>05d70e4a-834c-4647-9866-fa76b42652f2</guid>
+        <birthdate></birthdate>
+        <email></email>
+        <tel_num></tel_num>
+        <guid>05d70e4a-834c-4647-9866-fa76b42652f1</guid>
     </person>
 </People>
