@@ -34,7 +34,7 @@ jobs:
         run: mvn clean install
 
       - name: Run Tests
-        run: mvn test
+        run: mvn test -e # Add -e for more error details
 
       - name: Upload Test Results
         if: always()
@@ -42,7 +42,3 @@ jobs:
         with:
           name: test-results
           path: target/surefire-reports/*.xml # Adjust the path as needed
-
-      - name: Archive test results
-        if: always()
-        run: mvn surefire-report:report-only
