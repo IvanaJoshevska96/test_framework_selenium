@@ -19,7 +19,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17' # or your required version
+          java-version: '17' # Use your desired Java version
           distribution: 'adopt'
 
       - name: Build with Maven
@@ -27,3 +27,7 @@ jobs:
 
       - name: Run Tests
         run: mvn test
+
+      - name: Archive test results
+        if: always()
+        run: mvn surefire-report:report-only
