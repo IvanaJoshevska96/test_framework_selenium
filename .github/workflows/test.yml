@@ -1,12 +1,9 @@
-name: CI
+name: Java CI
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:  # Enable manual triggering
 
 jobs:
   build:
@@ -16,18 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up JDK
+      - name: Set up JDK 11
         uses: actions/setup-java@v2
         with:
-          java-version: '17' # Use your desired Java version
+          java-version: '11'
           distribution: 'adopt'
 
       - name: Build with Maven
         run: mvn clean install
 
       - name: Run Tests
-        run: mvn -Dtest='**/*Test,**/*Tests,**/*TestCase' test -Dsurefire.include="**/*Test.java,**/*Tests.java,**/*TestCase.java" # This runs all tests with the @Test annotation
-
-      - name: Archive Test Results
-        if: always()
-        run: mvn surefire-report:report-only
+        run: mvn test
