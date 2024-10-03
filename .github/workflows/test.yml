@@ -16,14 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
@@ -34,11 +26,8 @@ jobs:
         run: mvn clean install
 
       - name: Run Tests
-        run: mvn test -e # Add -e for more error details
+        run: mvn -Dtest='**/*Test,**/*Tests,**/*TestCase' test -Dsurefire.include="**/*Test.java,**/*Tests.java,**/*TestCase.java" # This runs all tests with the @Test annotation
 
-      - name: Upload Test Results
+      - name: Archive Test Results
         if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: target/surefire-reports/*.xml # Adjust the path as needed
+        run: mvn surefire-report:report-only
