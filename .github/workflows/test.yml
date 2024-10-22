@@ -35,5 +35,5 @@ jobs:
           sudo chmod +x /usr/local/bin/chromedriver
 
       - name: Run tests
-        run: |
-          ./gradlew test # or your build tool command here
+        run: | 
+         mvn clean install
