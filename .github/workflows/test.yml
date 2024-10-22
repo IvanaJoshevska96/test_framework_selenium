@@ -63,5 +63,6 @@ jobs:
           set +x
 
       - name: Run tests
-        run: |
-          mvn clean install
+        run: mvn clean test -DskipTests=false
+
+
