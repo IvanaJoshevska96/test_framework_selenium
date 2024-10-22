@@ -47,9 +47,9 @@ jobs:
           MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
           
           # Attempt to fetch ChromeDriver for the Chrome version
-          LATEST_DRIVER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION) || { echo "Failed to retrieve ChromeDriver version for major version $MAJOR_VERSION"; exit 1; }
+          LATEST_DRIVER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION) || echo "Failed to retrieve ChromeDriver version for major version $MAJOR_VERSION"
           
-          # If failed, fall back to latest ChromeDriver
+          # If fetching the specific version failed, fetch the latest ChromeDriver version
           if [ -z "$LATEST_DRIVER" ]; then
           echo "Fetching latest ChromeDriver version"
           LATEST_DRIVER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE) || { echo "Failed to retrieve the latest ChromeDriver version"; exit 1; }
