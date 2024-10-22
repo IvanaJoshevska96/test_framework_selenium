@@ -28,7 +28,7 @@ jobs:
           # Download the specific version of Chrome from Google
           wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_117.0.5938.132-1_amd64.deb
           # Install the downloaded .deb package
-          sudo dpkg -i google-chrome-stable_129.0.6668.112_amd64.deb || sudo apt-get install -f -y
+          sudo dpkg -i google-chrome-stable_132.0.6779.0_amd64.deb || sudo apt-get install -f -y
 
       # Install ChromeDriver for the corresponding Chrome version
       - name: Install ChromeDriver
