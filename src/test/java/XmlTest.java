@@ -1,11 +1,12 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.testng.Assert;
-import utils.TestBase;
+import utils.*;
 
 import static utils.xml_manipulation.XmlDuplicateChecker.checkForDuplicateField;
 import static utils.xml_manipulation.XmlGuidUpdater.updateFieldInXml;
 
-
+@ExtendWith({TestWatcherExtension.class})
 public class XmlTest extends TestBase {
     @Test
     public void checkIfXmlContainsDuplicateGUIDs() throws Exception {

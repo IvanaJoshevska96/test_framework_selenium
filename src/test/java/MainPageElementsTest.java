@@ -7,8 +7,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import utils.TestBase;
-import utils.TestWatcherExtension;
+import utils.*;
 
 import java.util.List;
 import java.util.Objects;
