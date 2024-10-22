@@ -19,8 +19,17 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
+      # Cache Maven dependencies
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn clean install --no-transfer-progress
 
       - name: Run Tests
         run: mvn test
