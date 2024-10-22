@@ -20,10 +20,11 @@ public class TestBase {
     public static void setup(String url) {
         ChromeOptions options = new ChromeOptions();
         driver = new ChromeDriver(options);
+        options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--ignore-ssl-errors=yes");
-        options.addArguments("--ignore-certificate-errors");
-        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--remote-debugging-port=9222");
         driver.get(url);
         driver.manage().window().maximize();
     }
