@@ -20,15 +20,15 @@ jobs:
           java-version: '17'
           distribution: 'temurin'  # Specify the JDK distribution (e.g., temurin, zulu, adopt)
 
-      # Install a specific version of Chrome (e.g., 117.x)
+      # Install the latest stable version of Chrome from the mirror
       - name: Install Chrome
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget
-          # Download the specific version of Chrome from Google
-          wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_117.0.5938.132-1_amd64.deb
-          # Install the downloaded .deb package
-          sudo dpkg -i google-chrome-stable_117.0.5938.132-1_amd64.deb || sudo apt-get install -f -y
+          sudo apt-get install -y wget apt-transport-https curl
+          # Download the latest stable version of Chrome from the mirror
+          LATEST_CHROME=$(wget -qO- https://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable/ | grep -oP 'google-chrome-stable_\d+\.\d+\.\d+\.\d+-1_amd64\.deb' | sort -V | tail -n 1)
+          wget https://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable/$LATEST_CHROME
+          sudo dpkg -i $LATEST_CHROME || sudo apt-get install -f -y  # Install Chrome and fix any missing dependencies
 
       # Install ChromeDriver for the corresponding Chrome version
       - name: Install ChromeDriver
