@@ -20,6 +20,15 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Install Chrome dependencies  # Add this step
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgbm-dev libxshmfence-dev
+
+      - name: Install Chrome browser  # Add this step
+        run: |
+          sudo apt-get install -y google-chrome-stable
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -31,12 +40,20 @@ jobs:
           java -version
           mvn -v
 
-      - name: Build
-        run: mvn clean install
+      - name: Build and run tests
+        run: mvn clean install -Dtest=YourTestClassNameHere -X
 
-      - name: Upload Surefire test reports  # Add this step
+      - name: Upload Surefire test reports  # Add this step to upload reports if tests fail
         if: failure()
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4.3.5
         with:
           name: surefire-reports
-          path: target/surefire-re
+          path: target/surefire-reports
+      - name: Install ChromeDriver
+        run: |
+          CHROME_DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
+          wget -N https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
+           unzip chromedriver_linux64.zip -d /usr/local/bin/
+           rm chromedriver_linux64.zip
+          
+
