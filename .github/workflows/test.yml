@@ -26,7 +26,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y wget
           # Download the specific version of Chrome from Google
-          wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_117.0.5938.132-1_amd64.deb
+          wget //https:https://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable/google-chrome-stable_99.0.4844.84-1_amd64.deb
           # Install the downloaded .deb package
           sudo dpkg -i google-chrome-stable_99.0.4844.84-1_amd64.deb || sudo apt-get install -f -y
 
