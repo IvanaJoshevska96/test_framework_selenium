@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin'  # Specify the JDK distribution (e.g., temurin, zulu, adopt)
+          distribution: 'temurin'
 
       - name: Install Chrome
         run: |
