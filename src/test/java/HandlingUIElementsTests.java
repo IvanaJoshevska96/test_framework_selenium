@@ -8,10 +8,12 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import utils.TestBase;
 
 import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class HandlingUIElementsTests extends TestBase {
@@ -41,7 +43,7 @@ public class HandlingUIElementsTests extends TestBase {
     @TestDescription("Verify that when the page loads,checkboxes are not checked")
     public void verifyInitialStateOfCheckboxes(String id) {
         WebElement checkBoxDay = driver.findElement(By.id(id));
-        Assert.assertFalse(checkBoxDay.isSelected());
+        assertFalse(checkBoxDay.isSelected());
     }
 
     @ParameterizedTest
@@ -51,7 +53,7 @@ public class HandlingUIElementsTests extends TestBase {
     public void verifyStateIsCorrectlyUpdated(String id) {
         WebElement checkBoxDay = driver.findElement(By.id(id));
         checkBoxDay.click();
-        Assert.assertTrue(checkBoxDay.isSelected());
+        assertTrue(checkBoxDay.isSelected());
     }
 
     @ParameterizedTest
@@ -61,9 +63,9 @@ public class HandlingUIElementsTests extends TestBase {
     public void verifyIndependentlyCheckingUnchecking(String id) {
         WebElement checkBoxDay = driver.findElement(By.id(id));
         checkBoxDay.click();
-        Assert.assertTrue(checkBoxDay.isSelected());
+        Assertions.assertTrue(checkBoxDay.isSelected());
         checkBoxDay.click();
-        Assert.assertFalse(checkBoxDay.isSelected());
+        Assertions.assertFalse(checkBoxDay.isSelected());
     }
 
     @ParameterizedTest
@@ -82,7 +84,7 @@ public class HandlingUIElementsTests extends TestBase {
         mondayDay.click();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.elementToBeSelected(mondayDay));
-        Assertions.assertTrue(mondayDay.isSelected(), "Monday checkbox should be checked");
+        assertTrue(mondayDay.isSelected(), "Monday checkbox should be checked");
         WebElement checkBoxDay = driver.findElement(By.id(id));
         Assertions.assertFalse(checkBoxDay.isSelected(), id + " checkbox should be unchecked");
     }
@@ -94,7 +96,7 @@ public class HandlingUIElementsTests extends TestBase {
     public void verifyCheckingWithKeyboardIsNotAllowed(String id) {
         WebElement checkBoxDay = driver.findElement(By.id(id));
         checkBoxDay.sendKeys(Keys.ENTER);
-        Assert.assertFalse(checkBoxDay.isSelected());
+        Assertions.assertFalse(checkBoxDay.isSelected());
     }
 
     @Test
@@ -117,8 +119,8 @@ public class HandlingUIElementsTests extends TestBase {
         addWaitTime(3000L);//ms
         Alert alertWindow = driver.switchTo().alert();
         String alertText = alertWindow.getText();
-        Assert.assertNotNull(alertText);
-        Assert.assertEquals(alertText, "I am an alert box!");
+        Assertions.assertNotNull(alertText);
+        Assertions.assertEquals(alertText, "I am an alert box!");
     }
 
     @Test
@@ -131,7 +133,7 @@ public class HandlingUIElementsTests extends TestBase {
         Alert alertWindow = driver.switchTo().alert();
         alertWindow.accept();
         String confirmationMsg = driver.findElement(By.xpath("//p[@id='demo']")).getText();
-        Assert.assertEquals(confirmationMsg, "You pressed OK!");
+        Assertions.assertEquals(confirmationMsg, "You pressed OK!");
     }
 
     @Test
@@ -144,7 +146,7 @@ public class HandlingUIElementsTests extends TestBase {
         Alert alertWindow = driver.switchTo().alert();
         alertWindow.dismiss();
         String confirmationMsg = driver.findElement(By.xpath("//p[@id='demo']")).getText();
-        Assert.assertEquals(confirmationMsg, "You pressed Cancel!");
+        Assertions.assertEquals(confirmationMsg, "You pressed Cancel!");
     }
 
     @Test
@@ -156,7 +158,7 @@ public class HandlingUIElementsTests extends TestBase {
         Alert prompt = driver.switchTo().alert();
         prompt.sendKeys("Harry Potter");
         prompt.accept();
-        Assert.assertEquals(driver.findElement(By.id("demo")).getText(), "Hello Harry Potter! How are you today?");
+        Assertions.assertEquals(driver.findElement(By.id("demo")).getText(), "Hello Harry Potter! How are you today?");
     }
 
     @Test
@@ -168,6 +170,6 @@ public class HandlingUIElementsTests extends TestBase {
         Alert prompt = driver.switchTo().alert();
         prompt.sendKeys("   ");
         prompt.accept();
-        Assert.assertEquals(driver.findElement(By.id("demo")).getText(), "Hello ! How are you today?");
+        Assertions.assertEquals(driver.findElement(By.id("demo")).getText(), "Hello ! How are you today?");
     }
 }

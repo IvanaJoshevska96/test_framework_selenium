@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,7 +8,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import utils.TestBase;
 import utils.TestWatcherExtension;
 
@@ -41,9 +41,9 @@ public class ProductsTests extends TestBase {
         );
         String actualTitle = driver.findElement(By.xpath("//div[@id='product-info']//div[@class='row']//div[@id='content']//div[@class='col-sm']//h1")).getText();
         if (productValue.equals("macbook")) {
-            Assert.assertEquals(actualTitle.toLowerCase(), "macbook");
+            Assertions.assertEquals(actualTitle.toLowerCase(), "macbook");
         } else if (productValue.equals("iphone")) {
-            Assert.assertEquals(actualTitle.toLowerCase(), "iphone");
+            Assertions.assertEquals(actualTitle.toLowerCase(), "iphone");
         }
     }
 }
