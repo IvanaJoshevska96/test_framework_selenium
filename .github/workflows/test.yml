@@ -20,14 +20,16 @@ jobs:
           java-version: '17'
           distribution: 'temurin'  # Specify the JDK distribution (e.g., temurin, zulu, adopt)
 
+      # Install Chrome
       - name: Install Chrome
         run: |
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
-      # Install ChromeDriver (Check for wget/unzip and fix the ChromeDriver version installation)
+      # Install ChromeDriver with debugging
       - name: Install ChromeDriver
         run: |
+          set -x  # Enable command debugging to see what runs
           # Ensure wget and unzip are installed, ignore errors if they are already installed
           if ! command -v wget &> /dev/null; then
           sudo apt-get install -y wget || true
@@ -36,16 +38,19 @@ jobs:
           sudo apt-get install -y unzip || true
           fi
           
-          # Get Chrome and ChromeDriver version
-          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
-          MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
-          LATEST_DRIVER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION)
+          # Get Chrome version and handle potential issues with the command
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+') || { echo "Failed to get Chrome version"; exit 1; }
+          MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1) || { echo "Failed to extract major version"; exit 1; }
+          
+          # Get the latest ChromeDriver version for the Chrome major version
+          LATEST_DRIVER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION) || { echo "Failed to retrieve ChromeDriver version"; exit 1; }
           
           # Download and set up ChromeDriver
-          wget https://chromedriver.storage.googleapis.com/$LATEST_DRIVER/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
+          wget https://chromedriver.storage.googleapis.com/$LATEST_DRIVER/chromedriver_linux64.zip || { echo "Failed to download ChromeDriver"; exit 1; }
+          unzip chromedriver_linux64.zip || { echo "Failed to unzip ChromeDriver"; exit 1; }
           sudo mv chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
+          set +x  # Disable debugging output after completion
 
       - name: Run tests
         run: |
