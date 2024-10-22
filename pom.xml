@@ -9,6 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <maven.test.skip>false</maven.test.skip>  <!-- Ensure this is set to false -->
         <manifold.version>2023.1.27</manifold.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -28,14 +29,6 @@
             <artifactId>selenium-chrome-driver</artifactId>
             <version>${selenium.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -77,9 +70,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.6.0</version>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-java-commons</artifactId>
+            <version>2.21.0</version> <!-- Use the latest version -->
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId> <!-- Or allure-junit if you're using JUnit -->
+            <version>2.21.0</version> <!-- Use the latest version -->
         </dependency>
     </dependencies>
     <build>
@@ -87,13 +85,50 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version> <!-- Use a suitable version -->
+                <version>3.8.1</version>
                 <configuration>
-                    <source>17</source> <!-- This should match your JDK -->
-                    <target>17</target> <!-- This should match your JDK -->
+                    <source>17</source>
+                    <target>17</target>
+                    <includes>
+                        <include>**/*Test.java</include>  <!-- Ensure your test files match this pattern -->
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.12.1</version>
+            </plugin>
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.12.0</version>
+                <executions>
+                    <execution>
+                        <id>allure</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.0</version> <!-- Make sure the version supports JUnit 5 -->
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include> <!-- Include test classes -->
+                    </includes>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+    </repositories>
 
 </project>
