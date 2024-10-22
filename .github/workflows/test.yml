@@ -49,4 +49,4 @@ jobs:
 
       - name: Run tests
         run: |
-          ./gradlew test # or your build tool command here
+          mvn clean install
