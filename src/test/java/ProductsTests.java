@@ -35,7 +35,7 @@ public class ProductsTests extends TestBase {
     public void verifyMacBookItem(String productValue) {
         this.product = productValue;
         setupProduct();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15)); //wait for the robot verification to pass
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30)); //wait for the robot verification to pass
         wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@id='product-info']//div[@class='row']//div[@id='content']//div[@class='col-sm']//h1"))
         );
