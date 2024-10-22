@@ -19,9 +19,9 @@ public class TestBase {
 
     public static void setup(String url) {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--disable-extensions");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
+       options.addArguments("--headless"); // Run Chrome in headless mode
+       options.addArguments("--no-sandbox"); // Disable the sandbox, sometimes necessary in CI environments
+       options.addArguments("--disable-dev-shm-usage"); // Avoid /dev/shm issues in Docker
         System.out.println("Starting ChromeDriver");
         driver = new ChromeDriver(options);
         driver.get(url);
