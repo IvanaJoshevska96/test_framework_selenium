@@ -18,11 +18,6 @@ public class TestBase {
     public static String BASE_URL = "https://demo.opencart.com/";
 
     public static void setup(String url) {
-
-//        System.out.println("Starting ChromeDriver");
-//        driver = new ChromeDriver();
-//        driver.get(url);
-//        driver.manage().window().maximize();
         ChromeOptions options = new ChromeOptions();
         driver = new ChromeDriver(options);
         options.addArguments("--disable-dev-shm-usage");
@@ -30,8 +25,7 @@ public class TestBase {
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-dev-shm-usage");
         driver.get(url);
-//        driver.manage().window().maximize();
-
+        driver.manage().window().maximize();
     }
 
     public static void tearDown() {
