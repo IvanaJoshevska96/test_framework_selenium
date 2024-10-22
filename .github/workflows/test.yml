@@ -49,3 +49,11 @@ jobs:
 
       - name: Build and run tests
         run: mvn clean install -Dmaven.test.failure.ignore=true -e -X
+
+      - name: Upload Surefire test reports
+                 - if: always()  # Always run this step, even if previous steps fail
+                 - uses: actions/upload-artifact@v3
+                 - with:
+                 - name: surefire-reports
+                 - path: target/surefire-reports
+
