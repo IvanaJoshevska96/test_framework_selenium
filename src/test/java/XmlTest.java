@@ -1,7 +1,10 @@
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testng.Assert;
-import utils.*;
+import utils.TestBase;
+import utils.TestWatcherExtension;
+import utils.xml_manipulation.XmlDuplicateChecker;
+import utils.xml_manipulation.XmlGuidUpdater;
 
 import static utils.xml_manipulation.XmlDuplicateChecker.checkForDuplicateField;
 import static utils.xml_manipulation.XmlGuidUpdater.updateFieldInXml;
