@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.Set;
 
@@ -17,9 +18,12 @@ public class TestBase {
     public static String BASE_URL = "https://demo.opencart.com/";
 
     public static void setup(String url) {
-
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-extensions");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
         System.out.println("Starting ChromeDriver");
-        driver = new ChromeDriver();
+        driver = new ChromeDriver(options);
         driver.get(url);
         driver.manage().window().maximize();
 
