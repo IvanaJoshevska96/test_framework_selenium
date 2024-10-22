@@ -18,15 +18,19 @@ public class TestBase {
     public static String BASE_URL = "https://demo.opencart.com/";
 
     public static void setup(String url) {
+
+//        System.out.println("Starting ChromeDriver");
+//        driver = new ChromeDriver();
+//        driver.get(url);
+//        driver.manage().window().maximize();
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-gpu");
-        System.out.println("Starting ChromeDriver");
         driver = new ChromeDriver(options);
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--ignore-ssl-errors=yes");
+        options.addArguments("--ignore-certificate-errors");
+        options.addArguments("--disable-dev-shm-usage");
         driver.get(url);
-        driver.manage().window().maximize();
+//        driver.manage().window().maximize();
 
     }
 
