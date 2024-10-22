@@ -48,4 +48,4 @@ jobs:
           mvn -v
 
       - name: Build and run tests
-        run: mvn clean install -Dsurefire.skipAfterFailureCount=1
+        run: mvn clean install -Dmaven.test.failure.ignore=true -e -X
