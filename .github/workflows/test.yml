@@ -1,10 +1,10 @@
-name: Build
+name: Build and Test
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Allow manual runs
+  workflow_dispatch:  # Allow manual trigger
 
 jobs:
   build:
@@ -20,14 +20,21 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Install Chrome dependencies  # Add this step
+      - name: Install Chrome dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libgbm-dev libxshmfence-dev
 
-      - name: Install Chrome browser  # Add this step
+      - name: Install Chrome browser
         run: |
           sudo apt-get install -y google-chrome-stable
+
+      - name: Install ChromeDriver
+        run: |
+          CHROME_DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
+          wget -N https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip -d /usr/local/bin/
+          rm chromedriver_linux64.zip
 
       - name: Cache dependencies
         uses: actions/cache@v4
@@ -43,17 +50,9 @@ jobs:
       - name: Build and run tests
         run: mvn clean install -X
 
-      - name: Upload Surefire test reports  # Add this step to upload reports if tests fail
+      - name: Upload Surefire test reports (if tests fail)
         if: failure()
-        uses: actions/upload-artifact@v4.3.5
+        uses: actions/upload-artifact@v3
         with:
           name: surefire-reports
           path: target/surefire-reports
-      - name: Install ChromeDriver
-        run: |
-          CHROME_DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
-          wget -N https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
-           unzip chromedriver_linux64.zip -d /usr/local/bin/
-           rm chromedriver_linux64.zip
-          
-
