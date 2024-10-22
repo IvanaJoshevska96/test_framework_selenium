@@ -49,10 +49,3 @@ jobs:
 
       - name: Build and run tests
         run: mvn clean install -X
-
-      - name: Upload Surefire test reports (if tests fail)
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: surefire-reports
-          path: target/surefire-reports
