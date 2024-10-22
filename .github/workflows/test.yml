@@ -1,20 +1,24 @@
-name: Run Selenium Tests
+name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v2
 
       - name: Set up JDK
-        uses: actions/setup-java@v4.0.0
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: ''
+          distribution: 'temurin'  # Specify the JDK distribution (e.g., temurin, zulu, adopt)
 
       - name: Install Chrome
         run: |
@@ -23,7 +27,7 @@ jobs:
 
       - name: Install ChromeDriver
         run: |
-          CHROME_VERSION=$(google-chrome --version | sed 's/.* \([0-9]*\.[0-9]*\.[0-9]*\).*/\1/')
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
           CHROME_DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION%.*})
           wget https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
@@ -32,4 +36,4 @@ jobs:
 
       - name: Run tests
         run: |
-          ./gradlew test # Adjust according to your build tool
+          ./gradlew test # or your build tool command here
