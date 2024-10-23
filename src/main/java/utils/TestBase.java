@@ -19,13 +19,16 @@ public class TestBase {
 
     public static void setup(String url) {
         ChromeOptions options = new ChromeOptions();
-        driver = new ChromeDriver(options);
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--headless");
+        options.addArguments("--headless");  // Enables headless mode
         options.addArguments("--disable-gpu");
         options.addArguments("--remote-debugging-port=9222");
-        driver.get(url);
+
+// Initialize the WebDriver with the configured ChromeOptions
+        WebDriver driver = new ChromeDriver(options);
+
+        driver.get(url);  // Navigate to the desired URL
         driver.manage().window().maximize();
     }
 
