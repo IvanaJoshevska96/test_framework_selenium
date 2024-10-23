@@ -37,16 +37,19 @@ jobs:
           CHROME_VERSION="117.0.5938.62"
           MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
 
-          # Attempt to fetch the corresponding ChromeDriver version
+          # Fetch the corresponding ChromeDriver version
           LATEST_DRIVER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION) || true
-          
-          # Check if we successfully fetched a version; if not, fallback to the latest ChromeDriver
+
+          # If unable to fetch the version, fall back to the latest
           if [ -z "$LATEST_DRIVER" ]; then
-            echo "Failed to retrieve ChromeDriver version for Chrome $MAJOR_VERSION, falling back to the latest version."
+            echo "Falling back to the latest ChromeDriver version."
             LATEST_DRIVER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE) || { echo "Failed to retrieve the latest ChromeDriver version"; exit 1; }
           fi
 
-          # Download and install ChromeDriver
+          # Remove any existing incompatible ChromeDriver
+          sudo rm -f /usr/local/bin/chromedriver
+
+          # Download and install the correct version of ChromeDriver
           wget https://chromedriver.storage.googleapis.com/$LATEST_DRIVER/chromedriver_linux64.zip || { echo "Failed to download ChromeDriver"; exit 1; }
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/
