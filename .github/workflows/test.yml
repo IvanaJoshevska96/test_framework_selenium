@@ -18,49 +18,59 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin'  # Specify the JDK distribution (e.g., temurin, zulu, adopt)
-  # Install a specific stable version of Chrome from the mirror
-      - name: Install Chrome
-    run: |
-      sudo apt-get update
-      sudo apt-get install -y wget apt-transport-https curl
-      # Define the specific version of Chrome you want to install
-      CHROME_VERSION="117.0.5938.62"  # Replace with your desired version
-      CHROME_DEB="google-chrome-stable_${CHROME_VERSION}-1_amd64.deb"
-      
-      # Download the specified Chrome version from the mirror
-      wget https://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable/$CHROME_DEB
-      sudo dpkg -i $CHROME_DEB || sudo apt-get install -f -y  # Install Chrome and fix any missing dependencies
-  
+          distribution: 'temurin'  # Specify the JDK distribution
+
+      # Install the latest stable version of Chrome from the mirror
+      - name: Install Latest Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget apt-transport-https curl
+          # Download the latest stable version of Chrome from the mirror
+          LATEST_CHROME=$(wget -qO- https://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable/ | grep -oP 'google-chrome-stable_\d+\.\d+\.\d+\.\d+-1_amd64\.deb' | sort -V | tail -n 1)
+          wget https://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable/$LATEST_CHROME
+          sudo dpkg -i $LATEST_CHROME || sudo apt-get install -f -y  # Install Chrome and fix any missing dependencies
+
+      # Install a specific stable version of Chrome from the mirror
+      - name: Install Specific Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget apt-transport-https curl
+          # Define the specific version of Chrome to install
+          CHROME_VERSION="117.0.5938.62"  # Replace with your desired version
+          CHROME_DEB="google-chrome-stable_${CHROME_VERSION}-1_amd64.deb"
+          
+          # Download and install the specific Chrome version from the mirror
+          wget https://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable/$CHROME_DEB
+          sudo dpkg -i $CHROME_DEB || sudo apt-get install -f -y  # Install Chrome and fix any missing dependencies
+
+      # Install ChromeDriver for the corresponding Chrome version
       - name: Install ChromeDriver
-     run: |
-      set -x
-      # Ensure wget and unzip are installed
-      if ! command -v wget &> /dev/null; then
-      sudo apt-get install -y wget || true
-      fi
-      if ! command -v unzip &> /dev/null; then
-      sudo apt-get install -y unzip || true
-      fi
-      
-      # Define the specific version of Chrome you installed
-      CHROME_VERSION="117.0.5938.62"  # Must match the Chrome version
-      
-      # Extract the major version from the specified Chrome version
-      MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
-      
-      # Fetch the corresponding ChromeDriver version
-      LATEST_DRIVER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION) || { echo "Failed to retrieve ChromeDriver version for major version $MAJOR_VERSION"; exit 1; }
-      
-      # Download and set up ChromeDriver
-      wget https://chromedriver.storage.googleapis.com/$LATEST_DRIVER/chromedriver_linux64.zip || { echo "Failed to download ChromeDriver"; exit 1; }
-      unzip chromedriver_linux64.zip
-      sudo mv chromedriver /usr/local/bin/
-      sudo chmod +x /usr/local/bin/chromedriver
-      set +x
+        run: |
+          set -x
+          # Ensure wget and unzip are installed
+          if ! command -v wget &> /dev/null; then
+            sudo apt-get install -y wget || true
+          fi
+          if ! command -v unzip &> /dev/null; then
+            sudo apt-get install -y unzip || true
+          fi
+          
+          # Define the specific version of Chrome installed
+          CHROME_VERSION="117.0.5938.62"  # Must match the Chrome version
+          
+          # Extract the major version from the specified Chrome version
+          MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
+          
+          # Fetch the corresponding ChromeDriver version
+          LATEST_DRIVER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION) || { echo "Failed to retrieve ChromeDriver version for major version $MAJOR_VERSION"; exit 1; }
+          
+          # Download and install ChromeDriver
+          wget https://chromedriver.storage.googleapis.com/$LATEST_DRIVER/chromedriver_linux64.zip || { echo "Failed to download ChromeDriver"; exit 1; }
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+          set +x
 
- 
-          - name: Run tests
+      # Run tests
+      - name: Run tests
         run: mvn clean test -DskipTests=false
-
-
