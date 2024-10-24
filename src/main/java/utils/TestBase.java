@@ -19,6 +19,7 @@ public class TestBase {
     public static String BASE_URL = "https://demo.opencart.com/";
 
     public static void setup(String url) {
+        // Setup ChromeDriver using WebDriverManager
         WebDriverManager.chromedriver().setup();
 
         // Create ChromeOptions and configure them
