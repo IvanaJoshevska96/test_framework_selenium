@@ -26,7 +26,7 @@ jobs:
           sudo apt-get install -y wget apt-transport-https curl
           
           # Use a recent stable version of Chrome
-          CHROME_VERSION="130.0.6723.69"
+          CHROME_VERSION="114.0.5735.90"
           CHROME_DEB="google-chrome-stable_${CHROME_VERSION}-1_amd64.deb"
           wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/$CHROME_DEB || { echo "Failed to download Chrome"; exit 1; }
           sudo dpkg -i $CHROME_DEB || sudo apt-get install -f -y
