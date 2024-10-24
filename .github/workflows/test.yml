@@ -24,36 +24,19 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wget apt-transport-https curl
-          
-          # Use a recent stable version of Chrome
-          CHROME_VERSION="114.0.5735.90"
+          CHROME_VERSION="130.0.6723.69"
           CHROME_DEB="google-chrome-stable_${CHROME_VERSION}-1_amd64.deb"
-          wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/$CHROME_DEB || { echo "Failed to download Chrome"; exit 1; }
+          wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/${CHROME_DEB}
           sudo dpkg -i $CHROME_DEB || sudo apt-get install -f -y
 
-      - name: Install Compatible ChromeDriver
+      - name: Install ChromeDriver
         run: |
           set -x
           sudo apt-get install -y wget unzip
 
-          # Get the major and minor version of the installed Chrome
-          MAJOR_MINOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1-2)
-
-          # Fetch the compatible ChromeDriver version based on the Chrome version
-          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.chromium.org/downloads/version-selection" | \
-            grep -oP "(?<=${MAJOR_MINOR_VERSION}\s)[^<]+" | head -n 1)
-
-          # Check if ChromeDriver version is valid
-          if [ -z "$CHROMEDRIVER_VERSION" ]; then
-            echo "No compatible ChromeDriver found for Chrome version $CHROME_VERSION."
-            exit 1
-          fi
-
-          # Remove any existing incompatible ChromeDriver
-          sudo rm -f /usr/local/bin/chromedriver
-
-          # Download and install the correct version of ChromeDriver
-          wget "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" || { echo "Failed to download ChromeDriver"; exit 1; }
+          # Directly download ChromeDriver version 114.0.5735.90
+          CHROMEDRIVER_VERSION="114.0.5735.90"
+          wget https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip || { echo "Failed to download ChromeDriver"; exit 1; }
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
