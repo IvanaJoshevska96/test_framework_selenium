@@ -24,33 +24,23 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wget apt-transport-https curl
-          CHROME_VERSION="117.0.5938.62"
+          CHROME_VERSION="66.0.3359.181" # Specify the exact version
           CHROME_DEB="google-chrome-stable_${CHROME_VERSION}-1_amd64.deb"
-          wget https://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable/$CHROME_DEB
+          wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/$CHROME_DEB
           sudo dpkg -i $CHROME_DEB || sudo apt-get install -f -y
 
-      - name: Install Compatible ChromeDriver
+      - name: Install Specific ChromeDriver
         run: |
           set -x
           sudo apt-get install -y wget unzip
 
-          CHROME_VERSION="117.0.5938.62"
-          MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
-
-          # Fetch the corresponding ChromeDriver version
-          LATEST_DRIVER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION) || true
-
-          # If unable to fetch the version, fall back to the latest
-          if [ -z "$LATEST_DRIVER" ]; then
-            echo "Falling back to the latest ChromeDriver version."
-            LATEST_DRIVER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE) || { echo "Failed to retrieve the latest ChromeDriver version"; exit 1; }
-          fi
+          CHROMEDRIVER_VERSION="2.39.56" # Specify the exact ChromeDriver version
 
           # Remove any existing incompatible ChromeDriver
           sudo rm -f /usr/local/bin/chromedriver
 
           # Download and install the correct version of ChromeDriver
-          wget https://chromedriver.storage.googleapis.com/$LATEST_DRIVER/chromedriver_linux64.zip || { echo "Failed to download ChromeDriver"; exit 1; }
+          wget https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip || { echo "Failed to download ChromeDriver"; exit 1; }
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
