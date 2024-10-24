@@ -25,9 +25,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y wget apt-transport-https curl
           
-          # Use the following URL to download a known version of Chrome
-          CHROME_DEB="google-chrome-stable_66.0.3359.181-1_amd64.deb"
-          wget https://www.slimjet.com/chrome/download-file.php?file=chrome/66.0.3359.181/google-chrome-stable_66.0.3359.181-1_amd64.deb -O $CHROME_DEB || { echo "Failed to download Chrome"; exit 1; }
+          # Use a more recent version of Chrome
+          CHROME_VERSION="130.0.6723.69"
+          CHROME_DEB="google-chrome-stable_${CHROME_VERSION}-1_amd64.deb"
+          wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/$CHROME_DEB || { echo "Failed to download Chrome"; exit 1; }
           sudo dpkg -i $CHROME_DEB || sudo apt-get install -f -y
 
       - name: Install Specific ChromeDriver
@@ -35,7 +36,8 @@ jobs:
           set -x
           sudo apt-get install -y wget unzip
 
-          CHROMEDRIVER_VERSION="2.39.56" # Specify the exact ChromeDriver version
+          # Use the specific ChromeDriver version
+          CHROMEDRIVER_VERSION="2.39.56"
 
           # Remove any existing incompatible ChromeDriver
           sudo rm -f /usr/local/bin/chromedriver
