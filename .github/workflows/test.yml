@@ -32,4 +32,21 @@ jobs:
           sudo dpkg -i $CHROME_DEB || sudo apt-get install -f -y
 
       - name: Install Specific ChromeDriver
+        run: |
+          set -x
+          sudo apt-get install -y wget unzip
 
+          CHROMEDRIVER_VERSION="2.39.56" # Specify the exact ChromeDriver version
+
+          # Remove any existing incompatible ChromeDriver
+          sudo rm -f /usr/local/bin/chromedriver
+
+          # Download and install the correct version of ChromeDriver
+          wget https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip || { echo "Failed to download ChromeDriver"; exit 1; }
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+          set +x
+
+      - name: Run tests
+        run: mvn clean test -DskipTests=false
