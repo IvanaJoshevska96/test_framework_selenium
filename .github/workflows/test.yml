@@ -18,43 +18,43 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin'  # Specify the JDK distribution
+          distribution: 'temurin'
 
-      # Install a specific stable version of Chrome from the mirror
       - name: Install Specific Chrome
         run: |
           sudo apt-get update
           sudo apt-get install -y wget apt-transport-https curl
-          # Define the specific version of Chrome to install
-          CHROME_VERSION="117.0.5938.62"  # Replace with your desired version
+          CHROME_VERSION="117.0.5938.62"
           CHROME_DEB="google-chrome-stable_${CHROME_VERSION}-1_amd64.deb"
-          
-          # Download and install the specific Chrome version from the mirror
           wget https://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable/$CHROME_DEB
-          sudo dpkg -i $CHROME_DEB || sudo apt-get install -f -y  # Install Chrome and fix any missing dependencies
+          sudo dpkg -i $CHROME_DEB || sudo apt-get install -f -y
 
       - name: Install Compatible ChromeDriver
         run: |
           set -x
-          # Ensure wget and unzip are installed
           sudo apt-get install -y wget unzip
-          
-          # Define the specific version of Chrome installed
-          CHROME_VERSION="117.0.5938.62"  # Must match the Chrome version
 
-          # Extract the major version from the specified Chrome version
+          CHROME_VERSION="117.0.5938.62"
           MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
 
           # Fetch the corresponding ChromeDriver version
-          LATEST_DRIVER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION) || { echo "Failed to retrieve ChromeDriver version for major version $MAJOR_VERSION"; exit 1; }
+          LATEST_DRIVER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION) || true
 
-          # Download and install ChromeDriver
+          # If unable to fetch the version, fall back to the latest
+          if [ -z "$LATEST_DRIVER" ]; then
+            echo "Falling back to the latest ChromeDriver version."
+            LATEST_DRIVER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE) || { echo "Failed to retrieve the latest ChromeDriver version"; exit 1; }
+          fi
+
+          # Remove any existing incompatible ChromeDriver
+          sudo rm -f /usr/local/bin/chromedriver
+
+          # Download and install the correct version of ChromeDriver
           wget https://chromedriver.storage.googleapis.com/$LATEST_DRIVER/chromedriver_linux64.zip || { echo "Failed to download ChromeDriver"; exit 1; }
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
           set +x
 
-      # Run tests
       - name: Run tests
         run: mvn clean test -DskipTests=false
