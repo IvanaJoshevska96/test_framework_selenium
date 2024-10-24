@@ -1,5 +1,6 @@
 package utils;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,9 @@ public class TestBase {
     public static String BASE_URL = "https://demo.opencart.com/";
 
     public static void setup(String url) {
+        WebDriverManager.chromedriver().setup();
+
+        // Create ChromeOptions and configure them
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
@@ -25,10 +29,13 @@ public class TestBase {
         options.addArguments("--disable-gpu");
         options.addArguments("--remote-debugging-port=9222");
 
-// Initialize the WebDriver with the configured ChromeOptions
-        WebDriver driver = new ChromeDriver(options);
+        // Initialize the class-level driver with the configured ChromeOptions
+        driver = new ChromeDriver(options);
 
-        driver.get(url);  // Navigate to the desired URL
+        // Navigate to the desired URL
+        driver.get(url);
+
+        // Maximize the browser window
         driver.manage().window().maximize();
     }
 
